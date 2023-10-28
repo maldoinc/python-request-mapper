@@ -1,0 +1,84 @@
+[tool.poetry]
+name = "request-mapper"
+version = "0.1.0"
+description = "Map request data into pydantic models"
+authors = ["Aldo Mateli <aldo.mateli@gmail.com>"]
+license = "MIT"
+readme = "readme.md"
+
+keywords = [
+    "flask",
+    "django",
+    "pydantic",
+    "request mapper",
+    "request model",
+    "model"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Django",
+    "Framework :: Flask",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Repository = "https://github.com/maldoinc/python-request-mapper"
+Documentation = "https://maldoinc.github.io/python-request-mapper"
+Changelog = "https://github.com/maldoinc/python-request-mapper/releases"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = ">=1.0"
+typing-extensions = "^4.1.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.3"
+pyright = "^1.1.332"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+src = ["request_mapper"]
+fixable = ["ALL"]
+select = ["ALL"]
+ignore = [
+    "ANN401", # Allow usage of any
+    "PT009", # Prefer using assertEqual instead of plain asserts
+    "ANN101", # Exclude self from type hint requirement,
+    "TD003", # Exclude "missing issue link for todos",
+    "FIX002", # Disable "Line contains to do, consider resolving the issue". It will be done, in due time.
+    "D100", # Disable undocumented public module. The definitions themselves will be documented
+    "D104", # Same as above, disable missing docstring in public package,
+    "D203", # Ignore "one blank line before class". Using "no blank lines before class rule".
+    "D213", # Disable "Summary must go into next line"
+    "D102", # Disable due to repetitive docstrings for inherited classes/methods.
+    "D107", # Disable requiring docstrings in __init__
+
+    # Disable due to incompatibility with ruff format
+    "COM812",
+    "ISC001"
+]
+
+[tool.pyright]
+strict = ["mapper"]
