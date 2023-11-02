@@ -9,8 +9,8 @@ support for Flask.
 # Add this in your app initialization code.
 setup_mapper(
     integration=FlaskIntegration(
-        # Automatically decorate views so there's no need to add @map_request to every view.
-        # WIll not incur any performance overhead for views that don't use request-mapper.
+        # Automatically decorate views to avoid adding @map_request to every view.
+        # Will not incur any performance overhead for views that don't use request-mapper.
         # If map_views is enabled, setup_mapper must be called after all views have been registered!
         map_views=True,
         # Register an error handler that returns 422 alongside pydantic validation errors
