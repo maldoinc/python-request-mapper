@@ -1,7 +1,7 @@
 .PHONY: install lint check-fmt check-ruff check-mypy
 
 ifdef GITHUB_ACTIONS
-RUFF_ARGS := --format=github
+RUFF_ARGS := --output-format=github
 endif
 
 install:
