@@ -1,17 +1,16 @@
 import importlib
 import unittest
-
-from pydantic import BaseModel
-
 from test.fixtures import (
     DummyIntegration,
     FormDataDummyModel,
     QueryDummyModel,
     RequestBodyDummyModel,
 )
+from typing import Optional
 from unittest.mock import Mock
 
 import request_mapper
+from pydantic import BaseModel
 from request_mapper import FromFormData, FromQueryString, FromRequestBody, RequestValidationError
 
 
@@ -21,12 +20,10 @@ class TestMapper(unittest.TestCase):
 
     def test_mapper_does_setup_sets_integration_converter(self):
         integration = DummyIntegration()
-        mock_response_converter = Mock()
 
-        request_mapper.setup_mapper(integration, mock_response_converter)
+        request_mapper.setup_mapper(integration)
 
         self.assertEqual(request_mapper._integration, integration)
-        self.assertEqual(request_mapper._response_converter, mock_response_converter)
         self.assertTrue(integration.set_up_called)
 
     def test_mapper_maps_data_after_setup(self):
@@ -70,7 +67,7 @@ class TestMapper(unittest.TestCase):
 
     def test_mapper_converts_response(self):
         class X:
-            def __init__(self, val):
+            def __init__(self, val) -> None:
                 self.val = val
 
             def do_thing(self):
@@ -82,8 +79,8 @@ class TestMapper(unittest.TestCase):
 
             return query
 
-        request_mapper.setup_mapper(DummyIntegration(), response_converter=BaseModel.model_dump)
-        self.assertEqual(target(), {"query": True})
+        request_mapper.setup_mapper(DummyIntegration())
+        self.assertEqual(target(), QueryDummyModel(query=True))
 
     def test_mapper_raises_when_not_set_up(self):
         @request_mapper.map_request
@@ -100,7 +97,7 @@ class TestMapper(unittest.TestCase):
 
     def test_mapper_does_not_have_mappings_causes_no_side_effects(self):
         @request_mapper.map_request
-        def _dummy(_foo: unittest.TestCase = None, _some_int: int = 5):
+        def _dummy(_foo: Optional[unittest.TestCase] = None, _some_int: int = 5):
             pass
 
         _dummy()

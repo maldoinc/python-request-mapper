@@ -84,19 +84,13 @@ def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
 
         bound_args = {name: _validate_input(val) for name, val in mapped_params.items()}
 
-        res = fn(*args, **kwargs, **bound_args)
-
-        if isinstance(res, BaseModel):
-            return _response_converter(res) if _response_converter else res.dict()
-
-        return res
+        return fn(*args, **kwargs, **bound_args)
 
     return inner
 
 
 def setup_mapper(
     integration: RequestMapperIntegration,
-    response_converter: ResponseConverter | None = None,
 ) -> None:
     """Initialize request mapper using a given integration.
 
@@ -104,9 +98,7 @@ def setup_mapper(
     subclass `RequestMapperIntegration` to provide your own.
     """
     global _integration  # noqa: PLW0603
-    global _response_converter  # noqa: PLW0603
     _integration = integration
-    _response_converter = response_converter
 
     _integration.set_up(request_mapper_decorator=map_request)
 

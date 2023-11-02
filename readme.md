@@ -40,8 +40,8 @@ integrations are available.
 
 ### Flask
 
-* Pull data from flask's request object
-* Optional: Automatically bind to all views without having to decorate them.
+* Pull data from flask's request args, json and form data.
+* Optional: Automatically map views without having to decorate them.
   * Views which do not use request mapper will not incur any performance penalty.
   * When using this feature the call to `setup_mapper` must be AFTER all views are registered.
 * Optional: Set up an error handler for validation errors which makes the api respond with a 422.

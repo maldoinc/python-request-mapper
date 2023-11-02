@@ -1,8 +1,12 @@
 from __future__ import annotations
 
-from request_mapper import RequestMapperIntegration
-from request_mapper.types import IncomingMappedData, RequestMapperDecorator
+from typing import TYPE_CHECKING
+
 from pydantic import BaseModel
+from request_mapper import RequestMapperIntegration
+
+if TYPE_CHECKING:
+    from request_mapper.types import IncomingMappedData, RequestMapperDecorator
 
 
 class QueryDummyModel(BaseModel):
@@ -23,7 +27,7 @@ class DummyIntegration(RequestMapperIntegration):
         query: IncomingMappedData | None = None,
         body: IncomingMappedData | None = None,
         form: IncomingMappedData | None = None,
-    ):
+    ) -> None:
         self.set_up_called = False
         self.query = {"query": True} if query is None else query
         self.body = {"body": True} if body is None else body
