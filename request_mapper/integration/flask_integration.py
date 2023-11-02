@@ -34,7 +34,8 @@ class FlaskIntegration(RequestMapperIntegration):
 
         @param app: An instance of your flask application.
         @param decorate_views: If true, all views will be decorated with map_request.
-        @param register_error_handler: If true, an error handler will be added to convert RequestValidationError to 422.
+        @param register_error_handler: If true, an error handler will be added to convert
+        RequestValidationError to 422.
         """
         self.add_error_handler = register_error_handler
         self.map_views = decorate_views

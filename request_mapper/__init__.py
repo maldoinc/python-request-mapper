@@ -15,7 +15,6 @@ from request_mapper.types import (
     RequestBodyMapping,
     RequestDataMapping,
     RequestValidationError,
-    ResponseConverter,
 )
 
 _integration: RequestMapperIntegration | None = None
