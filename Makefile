@@ -21,4 +21,4 @@ check-mypy:
 	.venv/bin/mypy request_mapper --strict
 
 format:
-	.venv/bin/ruff format . --check
+	.venv/bin/ruff format .
