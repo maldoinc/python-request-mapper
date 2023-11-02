@@ -1,12 +1,9 @@
-name: Tox Test
+name: Run all tests
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
-  tox:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +14,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
+
+      - name: Create python env
+        run: python -m venv .venv
+
+      - name: Install env
+        run: make install
 
       - name: Install tox
         run: pip install tox
