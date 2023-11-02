@@ -7,13 +7,17 @@ support for Flask.
 
 ```python
 # Add this in your app initialization code.
-
-# Optionally will decorate views so there's no need to 
-# add @map_request to every view.
-
-# This has no performance overhead for views that don't use request-mapper.
-# This must be called after all views have been registered!
-setup_mapper(integration=FlaskIntegration(app))
+# It must be called after all views have been registered!
+setup_mapper(
+    integration=FlaskIntegration(
+        # Automatically decorate views so there's no need to add @map_request to every view.
+        # WIll not incur any performance overhead for views that don't use request-mapper.
+        map_views=True,
+        # Register an error handler that returns 422 alongside pydantic validation errors
+        # when the request cannot be mapped.
+        add_error_handler=True,
+    )
+)
 
 
 # Define the models using Pydantic v1 or v2.
@@ -24,19 +28,20 @@ class PostCreateRequest(BaseModel):
 
 class PostFilterQuery(BaseModel):
     status: PostStatus | None = None
-    
+
 
 @app.get("/posts")
-# Request data from the current request. 
+# Request data from the current request.
 def post_list_all(query: FromQueryString[PostFilterQuery]) -> PaginatedResponse[Post]:
     # "query" is a valid pydantic model at this point.
     return PaginatedResponse(...)
-    
+
 
 @app.post("/posts")
 def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
     # "body" is a valid pydantic model at this point.
     return PostCreateResponse(...)
+
 ```
 
 ## Quickstart
