@@ -27,6 +27,10 @@ FromQueryString = Annotated[__T, QueryStringMapping()]
 
 
 def _validate_input(val: AnnotatedParameter) -> BaseModel:
+    if not _integration:
+        msg = "Integration is not set. Please call setup_mapper before starting your application."
+        raise ValueError(msg)
+
     try:
         return val.cls(**val.annotation.get_data(_integration))
     except ValidationError as e:
@@ -75,12 +79,6 @@ def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     @functools.wraps(fn)
     def inner(*args: Any, **kwargs: Any) -> Any:
-        if not _integration:
-            msg = (
-                "Integration is not set. Please call setup_mapper before starting your application."
-            )
-            raise ValueError(msg)
-
         bound_args = {name: _validate_input(val) for name, val in mapped_params.items()}
 
         return fn(*args, **kwargs, **bound_args)

@@ -7,16 +7,23 @@ from request_mapper.types import (
 )
 
 try:
-    import flask  # type: ignore[import-not-found]
+    import flask
 except ImportError as e:
     msg = "Flask"
     raise IntegrationDoesNotExistError(msg) from e
 
+from typing import TYPE_CHECKING
+
 from request_mapper import RequestValidationError
 from request_mapper.integration.integration import RequestMapperIntegration
 
+if TYPE_CHECKING:
+    from typing_extensions import Literal
 
-def _handle_request_validation_error(err: RequestValidationError) -> flask.Response:
+
+def _handle_request_validation_error(
+    err: RequestValidationError
+) -> tuple[flask.Response, Literal[422]]:
     return flask.jsonify({"location": err.location, "errors": err.source_errors}), 422
 
 
@@ -58,12 +65,12 @@ class FlaskIntegration(RequestMapperIntegration):
 
     def get_request_body_as_dict(self) -> IncomingMappedData:
         """Return the current request body using request.json."""
-        return flask.request.json
+        return flask.request.json  # type:ignore[no-any-return]
 
     def get_query_as_dict(self) -> IncomingMappedData:
         """Return the query data as a dict using request.args."""
-        return flask.request.args.to_dict()
+        return flask.request.args.to_dict()  # type:ignore[no-any-return]
 
     def get_form_data_as_dict(self) -> IncomingMappedData:
         """Return form data as a dict using request.form."""
-        return flask.request.form.to_dict()
+        return flask.request.form.to_dict()  # type:ignore[no-any-return]
