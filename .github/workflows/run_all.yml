@@ -1,31 +1,32 @@
-name: Run all tests
+name: Run everything
 
 on: [push]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
-
-      - name: Create python env
+          python-version: ${{ matrix.python-version }}
+      - name: Create venv
         run: python -m venv .venv
-
-      - name: Install env
+      - name: Install dependencies
         run: make install
-
+      - name: Lint
+        run: make check-ruff
+      - name: Check typing
+        run: make check-mypy
+      - name: Check formatting
+        run: make check-fmt
       - name: Install tox
         run: pip install tox
-
-      - name: Lint
-        run: make lint
-
       - name: Run tox
         run: tox
