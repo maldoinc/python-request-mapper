@@ -1,0 +1,25 @@
+name: Tox Test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  tox:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run tox
+        run: tox
