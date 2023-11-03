@@ -11,7 +11,7 @@ setup_mapper(
     integration=FlaskIntegration(
         # Automatically decorate views to avoid adding @map_request to every view.
         # Will not incur any performance overhead for views that don't use request-mapper.
-      
+
         # If map_views is enabled, setup_mapper must be called after 
         # all views have been registered!
         map_views=True,
@@ -52,9 +52,9 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
 * In your application setup, call `mapper.setup_mapper` with the integration of your choice.
 * Decorate targets with `@map_request` (Optional when using flask integration)
 * Map request data using one of the provided annotated types
-  * `FromQueryString[T]` or `Annotated[T, QueryStringMapping()]`
-  * `FromRequestBody[T]` or  `Annotated[T, RequestBodyMapping()]`
-  * `FromFormData[T]` or `Annotated[T, FormDataMapping()]`
+    * `FromQueryString[T]` or `Annotated[T, QueryStringMapping()]`
+    * `FromRequestBody[T]` or  `Annotated[T, RequestBodyMapping()]`
+    * `FromFormData[T]` or `Annotated[T, FormDataMapping()]`
 
 ## Integrations
 
@@ -62,8 +62,8 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
 
 * Pull data from flask's request args, json and form data.
 * Optional: Automatically map views without having to decorate them.
-  * Views which do not use request mapper will not incur any performance penalty.
-  * When using this feature the call to `setup_mapper` must be AFTER all views are registered.
+    * Views which do not use request mapper will not incur any performance penalty.
+    * When using this feature the call to `setup_mapper` must be AFTER all views are registered.
 * Optional: Set up an error handler for validation errors which makes the api respond with a 422.
 
 ### Custom integrations
@@ -76,3 +76,8 @@ Note that you must decorate your views with `@map_request`
 ## Demo application
 
 A demo flask application is available at [maldoinc/wireup-demo](https://github.com/maldoinc/wireup-demo)
+
+## Related projects
+
+Check out [Wireup](https://github.com/maldoinc/wireup), a Dependency Injection library with
+a focus on developer experience, type safety and ease of use.
