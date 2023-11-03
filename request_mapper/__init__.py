@@ -10,7 +10,7 @@ from typing_extensions import Annotated
 from request_mapper.integration.integration import RequestMapperIntegration
 from request_mapper.types import (
     AnnotatedParameter,
-    MappingFormRequest,
+    FormDataMapping,
     QueryStringMapping,
     RequestBodyMapping,
     RequestDataMapping,
@@ -22,7 +22,7 @@ _response_converter: Callable[[BaseModel], Any] | None = None
 __T = TypeVar("__T")
 
 FromRequestBody = Annotated[__T, RequestBodyMapping()]
-FromFormData = Annotated[__T, MappingFormRequest()]
+FromFormData = Annotated[__T, FormDataMapping()]
 FromQueryString = Annotated[__T, QueryStringMapping()]
 
 

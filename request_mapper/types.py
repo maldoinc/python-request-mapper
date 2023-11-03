@@ -54,7 +54,7 @@ class RequestBodyMapping(RequestDataMapping):
         return "request-body"
 
 
-class MappingFormRequest(RequestDataMapping):
+class FormDataMapping(RequestDataMapping):
     """Retrieve incoming data from form data."""
 
     def get_data(self, integration: RequestMapperIntegration) -> IncomingMappedData:
