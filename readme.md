@@ -11,7 +11,9 @@ setup_mapper(
     integration=FlaskIntegration(
         # Automatically decorate views to avoid adding @map_request to every view.
         # Will not incur any performance overhead for views that don't use request-mapper.
-        # If map_views is enabled, setup_mapper must be called after all views have been registered!
+      
+        # If map_views is enabled, setup_mapper must be called after 
+        # all views have been registered!
         map_views=True,
         # Register an error handler that returns 422 alongside pydantic validation errors
         # when the request cannot be mapped.
@@ -20,7 +22,7 @@ setup_mapper(
 )
 
 
-# Define the models using Pydantic v1 or v2.
+# Define models using Pydantic v1 or v2.
 class PostCreateRequest(BaseModel):
     title: str
     content: str
@@ -31,7 +33,7 @@ class PostFilterQuery(BaseModel):
 
 
 @app.get("/posts")
-# Request data from the current request.
+# Map data from the current request.
 def post_list_all(query: FromQueryString[PostFilterQuery]) -> PaginatedResponse[Post]:
     # "query" is a valid pydantic model at this point.
     return PaginatedResponse(...)
@@ -48,11 +50,13 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
 
 * `pip install request-mapper`.
 * In your application setup, call `mapper.setup_mapper` with the integration of your choice.
+* Decorate targets with `@map_request` (Optional when using flask integration)
+* Map request data using one of the provided annotated types
+  * `FromQueryString[T]` or `Annotated[T, QueryStringMapping()]`
+  * `FromRequestBody[T]` or  `Annotated[T, RequestBodyMapping()]`
+  * `FromFormData[T]` or `Annotated[T, FormDataMapping()]`
 
 ## Integrations
-
-Request mapper provides its own interface for integrations, so it can be added to any application. The following
-integrations are available.
 
 ### Flask
 
