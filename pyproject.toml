@@ -5,7 +5,9 @@ description = "Map request data into pydantic models"
 authors = ["Aldo Mateli <aldo.mateli@gmail.com>"]
 license = "MIT"
 readme = "readme.md"
-
+packages = [
+    { include = "request_mapper" }
+]
 keywords = [
     "flask",
     "django",
