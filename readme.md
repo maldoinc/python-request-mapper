@@ -72,3 +72,7 @@ You can create your own integration by inheriting `BaseIntegration` and supplyin
 to the `setup_mapper` call.
 
 Note that you must decorate your views with `@map_request`
+
+## Demo application
+
+A demo flask application is available at [maldoinc/wireup-demo](https://github.com/maldoinc/wireup-demo)
