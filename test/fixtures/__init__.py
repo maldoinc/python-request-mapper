@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 from request_mapper import RequestMapperIntegration
+from request_mapper.types import FunctionCall
 
 if TYPE_CHECKING:
     from request_mapper.types import IncomingMappedData, RequestMapperDecorator
@@ -36,11 +37,11 @@ class DummyIntegration(RequestMapperIntegration):
     def set_up(self, request_mapper_decorator: RequestMapperDecorator) -> None:
         self.set_up_called = True
 
-    def get_query_as_dict(self) -> IncomingMappedData:
+    def get_query_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         return self.query
 
-    def get_request_body_as_dict(self) -> IncomingMappedData:
+    def get_request_body_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         return self.body
 
-    def get_form_data_as_dict(self) -> IncomingMappedData:
+    def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         return self.form

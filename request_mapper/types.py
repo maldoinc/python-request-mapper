@@ -40,15 +40,19 @@ class RequestDataMapping(abc.ABC):
         """Return the location where the data is retrieved from."""
 
     @abc.abstractmethod
-    def get_data(self, integration: RequestMapperIntegration) -> IncomingMappedData:
+    def get_data(
+        self, integration: RequestMapperIntegration, call: FunctionCall
+    ) -> IncomingMappedData:
         """Return mapped data."""
 
 
 class RequestBodyMapping(RequestDataMapping):
     """Retrieve incoming data from the request body."""
 
-    def get_data(self, integration: RequestMapperIntegration) -> IncomingMappedData:
-        return integration.get_request_body_as_dict()
+    def get_data(
+        self, integration: RequestMapperIntegration, call: FunctionCall
+    ) -> IncomingMappedData:
+        return integration.get_request_body_as_dict(call)
 
     def get_location(self) -> str:
         return "request-body"
@@ -57,8 +61,10 @@ class RequestBodyMapping(RequestDataMapping):
 class FormDataMapping(RequestDataMapping):
     """Retrieve incoming data from form data."""
 
-    def get_data(self, integration: RequestMapperIntegration) -> IncomingMappedData:
-        return integration.get_form_data_as_dict()
+    def get_data(
+        self, integration: RequestMapperIntegration, call: FunctionCall
+    ) -> IncomingMappedData:
+        return integration.get_form_data_as_dict(call)
 
     def get_location(self) -> str:
         return "form-data"
@@ -67,8 +73,10 @@ class FormDataMapping(RequestDataMapping):
 class QueryStringMapping(RequestDataMapping):
     """Retrieve incoming data from the query string."""
 
-    def get_data(self, integration: RequestMapperIntegration) -> IncomingMappedData:
-        return integration.get_query_as_dict()
+    def get_data(
+        self, integration: RequestMapperIntegration, call: FunctionCall
+    ) -> IncomingMappedData:
+        return integration.get_query_as_dict(call)
 
     def get_location(self) -> str:
         return "query-string"
@@ -80,3 +88,12 @@ class AnnotatedParameter:
 
     cls: type[BaseModel]
     annotation: RequestDataMapping
+
+
+@dataclass(frozen=True)
+class FunctionCall:
+    """Model representing a function call."""
+
+    fn: AnyCallable
+    args: tuple[Any, ...]
+    kwargs: dict[str, Any]

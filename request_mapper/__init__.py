@@ -11,6 +11,7 @@ from request_mapper.integration.integration import RequestMapperIntegration
 from request_mapper.types import (
     AnnotatedParameter,
     FormDataMapping,
+    FunctionCall,
     QueryStringMapping,
     RequestBodyMapping,
     RequestDataMapping,
@@ -26,13 +27,13 @@ FromFormData = Annotated[__T, FormDataMapping()]
 FromQueryString = Annotated[__T, QueryStringMapping()]
 
 
-def _validate_input(val: AnnotatedParameter) -> BaseModel:
+def _validate_input(val: AnnotatedParameter, call: FunctionCall) -> BaseModel:
     if not _integration:
         msg = "Integration is not set. Please call setup_mapper before starting your application."
         raise ValueError(msg)
 
     try:
-        return val.cls(**val.annotation.get_data(_integration))
+        return val.cls(**val.annotation.get_data(_integration, call))
     except ValidationError as e:
         raise RequestValidationError(
             location=val.annotation.get_location(),
@@ -79,7 +80,12 @@ def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     @functools.wraps(fn)
     def inner(*args: Any, **kwargs: Any) -> Any:
-        bound_args = {name: _validate_input(val) for name, val in mapped_params.items()}
+        fn_call = FunctionCall(fn, args, kwargs)
+
+        bound_args = {
+            name: _validate_input(val, fn_call)
+            for name, val in mapped_params.items()
+        }
 
         return fn(*args, **kwargs, **bound_args)
 

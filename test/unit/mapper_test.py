@@ -7,10 +7,8 @@ from test.fixtures import (
     RequestBodyDummyModel,
 )
 from typing import Optional
-from unittest.mock import Mock
 
 import request_mapper
-from pydantic import BaseModel
 from request_mapper import FromFormData, FromQueryString, FromRequestBody, RequestValidationError
 
 

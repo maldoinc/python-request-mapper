@@ -4,7 +4,7 @@ import abc
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from request_mapper.types import IncomingMappedData, RequestMapperDecorator
+    from request_mapper.types import FunctionCall, IncomingMappedData, RequestMapperDecorator
 
 
 class RequestMapperIntegration(abc.ABC):
@@ -16,16 +16,16 @@ class RequestMapperIntegration(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_query_as_dict(self) -> IncomingMappedData:
+    def get_query_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         """Return the current request query data as a mapping."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_request_body_as_dict(self) -> IncomingMappedData:
+    def get_request_body_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         """Return the current request body as a mapping."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_form_data_as_dict(self) -> IncomingMappedData:
+    def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         """Return current request's form data as a mapping."""
         raise NotImplementedError
