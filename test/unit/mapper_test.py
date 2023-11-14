@@ -85,7 +85,7 @@ class TestMapper(unittest.TestCase):
         def _dummy(_foo: FromQueryString[unittest.TestCase]):
             pass
 
-        with self.assertRaises(ValueError) as e:
+        with self.assertRaises(TypeError) as e:
             _dummy()
 
         self.assertEqual(

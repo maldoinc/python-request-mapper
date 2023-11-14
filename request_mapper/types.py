@@ -35,9 +35,7 @@ class RequestValidationError(Exception):
 class RequestDataMapping(abc.ABC):
     """Base class to represent request data."""
 
-    @abc.abstractmethod
-    def get_location(self) -> str:
-        """Return the location where the data is retrieved from."""
+    location: str
 
     @abc.abstractmethod
     def get_data(
@@ -49,37 +47,34 @@ class RequestDataMapping(abc.ABC):
 class RequestBodyMapping(RequestDataMapping):
     """Retrieve incoming data from the request body."""
 
+    location = "request-body"
+
     def get_data(
         self, integration: RequestMapperIntegration, call: FunctionCall
     ) -> IncomingMappedData:
         return integration.get_request_body_as_dict(call)
 
-    def get_location(self) -> str:
-        return "request-body"
-
 
 class FormDataMapping(RequestDataMapping):
     """Retrieve incoming data from form data."""
+
+    location = "form-data"
 
     def get_data(
         self, integration: RequestMapperIntegration, call: FunctionCall
     ) -> IncomingMappedData:
         return integration.get_form_data_as_dict(call)
 
-    def get_location(self) -> str:
-        return "form-data"
-
 
 class QueryStringMapping(RequestDataMapping):
     """Retrieve incoming data from the query string."""
+
+    location = "query-string"
 
     def get_data(
         self, integration: RequestMapperIntegration, call: FunctionCall
     ) -> IncomingMappedData:
         return integration.get_query_as_dict(call)
-
-    def get_location(self) -> str:
-        return "query-string"
 
 
 @dataclass(frozen=True)
@@ -87,7 +82,7 @@ class AnnotatedParameter:
     """Model containing information about the class type and source of data to map."""
 
     cls: type[BaseModel]
-    annotation: RequestDataMapping
+    annotation: type[RequestDataMapping]
 
 
 @dataclass(frozen=True)
