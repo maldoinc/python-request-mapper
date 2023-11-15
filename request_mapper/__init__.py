@@ -19,7 +19,8 @@ from request_mapper.types import (
     QueryStringMapping,
     RequestBodyMapping,
     RequestDataMapping,
-    RequestValidationError, ResponseConverter,
+    RequestValidationError,
+    ResponseConverter,
 )
 
 _integration: RequestMapperIntegrationType | None = None
@@ -117,7 +118,7 @@ def _convert_value(res: Any) -> Any:
     if not isinstance(res, BaseModel):
         return res
 
-    if hasattr(res, 'model_dump'):
+    if hasattr(res, "model_dump"):
         return res.model_dump()
 
     return res.dict()
