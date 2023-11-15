@@ -2,14 +2,13 @@ import importlib
 import unittest
 from test.fixtures import (
     DummyIntegration,
-    FormDataDummyModel,
     QueryDummyModel,
     RequestBodyDummyModel,
 )
 from typing import Optional
 
 import request_mapper
-from request_mapper import FromFormData, FromQueryString, FromRequestBody, RequestValidationError
+from request_mapper import FromQueryString, FromRequestBody, RequestValidationError
 
 
 class TestMapper(unittest.TestCase):
@@ -29,11 +28,9 @@ class TestMapper(unittest.TestCase):
         def target(
             query: FromQueryString[QueryDummyModel],
             body: FromRequestBody[RequestBodyDummyModel],
-            form: FromFormData[FormDataDummyModel],
         ):
             self.assertEqual(query, QueryDummyModel(query=True))
             self.assertEqual(body, RequestBodyDummyModel(body=True))
-            self.assertEqual(form, FormDataDummyModel(form=True))
 
         request_mapper.setup_mapper(DummyIntegration())
         target()
@@ -58,7 +55,7 @@ class TestMapper(unittest.TestCase):
                     "loc": ("query",),
                     "msg": "Field required",
                     "type": "missing",
-                    "url": "https://errors.pydantic.dev/2.4/v/missing",
+                    "url": "https://errors.pydantic.dev/2.5/v/missing",
                 }
             ],
         )
