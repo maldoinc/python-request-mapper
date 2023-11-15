@@ -1,9 +1,18 @@
 from typing import Awaitable, Callable
 
-from aiohttp import web
-
 from request_mapper import AsyncRequestMapperIntegration, RequestValidationError
-from request_mapper.types import FunctionCall, IncomingMappedData, RequestMapperDecorator
+from request_mapper.types import (
+    FunctionCall,
+    IncomingMappedData,
+    IntegrationDoesNotExistError,
+    RequestMapperDecorator,
+)
+
+try:
+    from aiohttp import web
+except ImportError as e:
+    msg = "aiohttp"
+    raise IntegrationDoesNotExistError(msg) from e
 
 
 @web.middleware
