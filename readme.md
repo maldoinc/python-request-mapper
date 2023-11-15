@@ -66,6 +66,13 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
     * When using this feature the call to `setup_mapper` must be AFTER all views are registered.
 * Optional: Set up an error handler for validation errors which makes the api respond with a 422.
 
+### Aiohttp
+
+* Async integration.
+* Pull data from the current request.
+* Decorating views is still necessary.
+* `request: web.Request` must still be present as an argument.
+
 ### Custom integrations
 
 You can create your own integration by inheriting `BaseIntegration` and supplying an instance of that
