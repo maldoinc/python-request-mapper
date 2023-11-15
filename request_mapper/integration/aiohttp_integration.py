@@ -51,6 +51,3 @@ class AioHttpIntegration(AsyncRequestMapperIntegration):
 
     async def get_request_body_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         return await _get_request(call).json()  # type: ignore[no-any-return]
-
-    async def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
-        return await _get_request(call).multipart()  # type: ignore[return-value]

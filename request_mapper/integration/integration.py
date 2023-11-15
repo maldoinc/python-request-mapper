@@ -25,11 +25,6 @@ class RequestMapperIntegration(abc.ABC):
         """Return the current request body as a mapping."""
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
-        """Return current request's form data as a mapping."""
-        raise NotImplementedError
-
 
 class AsyncRequestMapperIntegration(abc.ABC):
     """Base class for integrations."""
@@ -47,11 +42,6 @@ class AsyncRequestMapperIntegration(abc.ABC):
     @abc.abstractmethod
     async def get_request_body_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         """Return the current request body as a mapping."""
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    async def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
-        """Return current request's form data as a mapping."""
         raise NotImplementedError
 
 

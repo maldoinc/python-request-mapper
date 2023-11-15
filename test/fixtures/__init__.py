@@ -42,6 +42,3 @@ class DummyIntegration(RequestMapperIntegration):
 
     def get_request_body_as_dict(self, call: FunctionCall) -> IncomingMappedData:
         return self.body
-
-    def get_form_data_as_dict(self, call: FunctionCall) -> IncomingMappedData:
-        return self.form

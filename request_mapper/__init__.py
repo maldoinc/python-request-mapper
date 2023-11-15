@@ -28,7 +28,6 @@ _response_converter: Callable[[BaseModel], Any] | None = None
 __T = TypeVar("__T")
 
 FromRequestBody = Annotated[__T, RequestBodyMapping]
-FromFormData = Annotated[__T, FormDataMapping]
 FromQueryString = Annotated[__T, QueryStringMapping]
 
 
@@ -87,8 +86,6 @@ async def _async_get_bound_args(
             data = await _integration.get_query_as_dict(fn_call)
         elif param.annotation == RequestBodyMapping:
             data = await _integration.get_request_body_as_dict(fn_call)
-        elif param.annotation == FormDataMapping:
-            data = await _integration.get_form_data_as_dict(fn_call)
 
         if data is not None:
             bound_args[name] = _validate_input(param, data)
@@ -110,8 +107,6 @@ def _sync_get_bound_args(
             data = _integration.get_query_as_dict(fn_call)
         elif param.annotation == RequestBodyMapping:
             data = _integration.get_request_body_as_dict(fn_call)
-        elif param.annotation == FormDataMapping:
-            data = _integration.get_form_data_as_dict(fn_call)
 
         if data is not None:
             bound_args[name] = _validate_input(param, data)
@@ -163,7 +158,6 @@ def setup_mapper(
 
 __all__ = [
     "FromRequestBody",
-    "FromFormData",
     "FromQueryString",
     "setup_mapper",
     "map_request",
