@@ -1,7 +1,12 @@
 # Python request mapper
 
-Map and validate incoming request data to Pydantic models. Request-mapper is framework agnostic with first-party
-support for Flask.
+* Map and validate incoming request data to Pydantic (v1 and v2) models. 
+* framework-agnostic and comes with first-party support for Flask and AioHttp.
+* Async ready
+
+![Build](https://img.shields.io/github/actions/workflow/status/maldoinc/python-request-mapper/run_all.yml)
+![PyPI version](https://img.shields.io/pypi/v/request-mapper)
+![Python versions](https://img.shields.io/pypi/pyversions/request-mapper)
 
 ## Examples
 
