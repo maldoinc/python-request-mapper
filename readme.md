@@ -57,8 +57,8 @@ def post_create(body: FromBody[PostCreateRequest]) -> PostCreateResponse:
 * In your application setup, call `mapper.setup_mapper` with the integration of your choice.
 * Decorate targets with `@map_request` (Optional when using flask integration)
 * Map request data using one of the provided annotated types
-    * `FromQuery[T]` or `Annotated[T, QueryStringMapping()]`
-    * `FromBody[T]` or  `Annotated[T, RequestBodyMapping()]`
+    * `FromQuery[T]` or `Annotated[T, QueryStringMapping]`
+    * `FromBody[T]` or  `Annotated[T, RequestBodyMapping]`
 
 ## Integrations
 
