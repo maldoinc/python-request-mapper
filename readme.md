@@ -2,7 +2,7 @@
 
 * Map and validate incoming request data to Pydantic (v1 and v2) models. 
 * framework-agnostic and comes with first-party support for Flask and AioHttp.
-* Async ready
+* Async ready.
 
 ![Build](https://img.shields.io/github/actions/workflow/status/maldoinc/python-request-mapper/run_all.yml)
 ![PyPI version](https://img.shields.io/pypi/v/request-mapper)
@@ -55,10 +55,12 @@ def post_create(body: FromBody[PostCreateRequest]) -> PostCreateResponse:
 
 * `pip install request-mapper`.
 * In your application setup, call `mapper.setup_mapper` with the integration of your choice.
-* Decorate targets with `@map_request` (Optional when using flask integration)
-* Map request data using one of the provided annotated types
+* Decorate targets with `@map_request` (Optional when using flask integration).
+* Map request data using one of the provided annotated types.
     * `FromQuery[T]` or `Annotated[T, QueryStringMapping]`
     * `FromBody[T]` or  `Annotated[T, RequestBodyMapping]`
+* Response is converted back to dict using Pydantic.
+  * Override behavior by passing a custom response converter.
 
 ## Integrations
 

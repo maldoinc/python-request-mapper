@@ -23,14 +23,3 @@ class FlaskIntegrationTest(unittest.TestCase):
         setup_mapper(integration=FlaskIntegration(app=self.app))
         res = self.client.post("/", query_string={"query": True}, json={"body": True})
         self.assertEqual(res.status_code, 200)
-
-    # def test_maps_form_data(self):
-    #     @self.app.route("/", methods=["POST"])
-    #     def flask_view(form: FromRequestBody[FormDataDummyModel]):
-    #         self.assertEqual(form, FormDataDummyModel(form=True))
-    #
-    #         return {}
-    #
-    #     setup_mapper(integration=FlaskIntegration(app=self.app))
-    #     res = self.client.post("/form", data={"form": True})
-    #     self.assertEqual(res.status_code, 200)

@@ -61,13 +61,6 @@ class TestMapper(unittest.TestCase):
         )
 
     def test_mapper_converts_response(self):
-        class X:
-            def __init__(self, val) -> None:
-                self.val = val
-
-            def do_thing(self):
-                return self.val * 2
-
         @request_mapper.map_request
         def target(query: FromBody[QueryDummyModel]):
             self.assertEqual(query, QueryDummyModel(query=True))
@@ -75,7 +68,7 @@ class TestMapper(unittest.TestCase):
             return query
 
         request_mapper.setup_mapper(DummyIntegration())
-        self.assertEqual(target(), QueryDummyModel(query=True))
+        self.assertEqual(target(), {"query": True})
 
     def test_mapper_raises_when_not_set_up(self):
         @request_mapper.map_request

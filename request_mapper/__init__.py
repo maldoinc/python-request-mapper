@@ -19,7 +19,7 @@ from request_mapper.types import (
     QueryStringMapping,
     RequestBodyMapping,
     RequestDataMapping,
-    RequestValidationError,
+    RequestValidationError, ResponseConverter,
 )
 
 _integration: RequestMapperIntegrationType | None = None
@@ -113,6 +113,16 @@ def _sync_get_bound_args(
     return bound_args
 
 
+def _convert_value(res: Any) -> Any:
+    if not isinstance(res, BaseModel):
+        return res
+
+    if hasattr(res, 'model_dump'):
+        return res.model_dump()
+
+    return res.dict()
+
+
 def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
     """Map annotated arguments from the function this decorates to strongly typed models."""
     mapped_params = _get_mapped_params(fn)
@@ -128,7 +138,7 @@ def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
         async def async_inner(*args: Any, **kwargs: Any) -> Any:
             bound_args = await _async_get_bound_args(mapped_params, FunctionCall(fn, args, kwargs))
 
-            return await fn(*args, **kwargs, **bound_args)
+            return _convert_value(await fn(*args, **kwargs, **bound_args))
 
         return async_inner
 
@@ -136,21 +146,29 @@ def map_request(fn: Callable[..., Any]) -> Callable[..., Any]:
     def sync_inner(*args: Any, **kwargs: Any) -> Any:
         bound_args = _sync_get_bound_args(mapped_params, FunctionCall(fn, args, kwargs))
 
-        return fn(*args, **kwargs, **bound_args)
+        return _convert_value(fn(*args, **kwargs, **bound_args))
 
     return sync_inner
 
 
 def setup_mapper(
     integration: RequestMapperIntegrationType,
+    response_converter: ResponseConverter | None = None,
 ) -> None:
     """Initialize request mapper using a given integration.
 
     If one of the existing ones does not fit for the project,
     subclass `RequestMapperIntegration` to provide your own.
+
+    :param integration: Integration providing access to framework data
+    :param response_converter: Convert the response to an appropriate object.
+    By default, will convert to a Python dict using Pydantic model_dump() or dict().
     """
     global _integration  # noqa: PLW0603
     _integration = integration
+
+    global _response_converter  # noqa: PLW0603
+    _response_converter = response_converter
 
     _integration.set_up(request_mapper_decorator=map_request)
 
