@@ -55,17 +55,6 @@ class RequestBodyMapping(RequestDataMapping):
         return integration.get_request_body_as_dict(call)
 
 
-class FormDataMapping(RequestDataMapping):
-    """Retrieve incoming data from form data."""
-
-    location = "form-data"
-
-    def get_data(
-        self, integration: RequestMapperIntegration, call: FunctionCall
-    ) -> IncomingMappedData:
-        return integration.get_form_data_as_dict(call)
-
-
 class QueryStringMapping(RequestDataMapping):
     """Retrieve incoming data from the query string."""
 

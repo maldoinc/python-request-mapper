@@ -2,7 +2,7 @@ import unittest
 from test.fixtures import QueryDummyModel, RequestBodyDummyModel
 
 from flask import Flask
-from request_mapper import FromQueryString, FromRequestBody, setup_mapper
+from request_mapper import FromBody, FromQuery, setup_mapper
 from request_mapper.integration.flask_integration import FlaskIntegration
 
 
@@ -14,9 +14,7 @@ class FlaskIntegrationTest(unittest.TestCase):
 
     def test_maps_query_json_models_successfully(self):
         @self.app.route("/", methods=["POST"])
-        def flask_view(
-            query: FromQueryString[QueryDummyModel], body: FromRequestBody[RequestBodyDummyModel]
-        ):
+        def flask_view(query: FromBody[QueryDummyModel], body: FromQuery[RequestBodyDummyModel]):
             self.assertEqual(query, QueryDummyModel(query=True))
             self.assertEqual(body, RequestBodyDummyModel(body=True))
 

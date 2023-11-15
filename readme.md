@@ -34,13 +34,13 @@ class PostFilterQuery(BaseModel):
 
 @app.get("/posts")
 # Map data from the current request.
-def post_list_all(query: FromQueryString[PostFilterQuery]) -> PaginatedResponse[Post]:
+def post_list_all(query: FromQuery[PostFilterQuery]) -> PaginatedResponse[Post]:
     # "query" is a valid pydantic model at this point.
     return PaginatedResponse(...)
 
 
 @app.post("/posts")
-def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
+def post_create(body: FromBody[PostCreateRequest]) -> PostCreateResponse:
     # "body" is a valid pydantic model at this point.
     return PostCreateResponse(...)
 
@@ -52,9 +52,8 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
 * In your application setup, call `mapper.setup_mapper` with the integration of your choice.
 * Decorate targets with `@map_request` (Optional when using flask integration)
 * Map request data using one of the provided annotated types
-    * `FromQueryString[T]` or `Annotated[T, QueryStringMapping()]`
-    * `FromRequestBody[T]` or  `Annotated[T, RequestBodyMapping()]`
-    * `FromFormData[T]` or `Annotated[T, FormDataMapping()]`
+    * `FromQuery[T]` or `Annotated[T, QueryStringMapping()]`
+    * `FromBody[T]` or  `Annotated[T, RequestBodyMapping()]`
 
 ## Integrations
 
@@ -70,8 +69,7 @@ def post_create(body: FromRequestBody[PostCreateRequest]) -> PostCreateResponse:
 
 * Async integration.
 * Pull data from the current request.
-* Decorating views is still necessary.
-* `request: web.Request` must still be present as an argument.
+* Note: even when using `map_request`, `request` must still be present as the first argument as required by aio.
 
 ### Custom integrations
 

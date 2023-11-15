@@ -8,7 +8,7 @@ from test.fixtures import (
 from typing import Optional
 
 import request_mapper
-from request_mapper import FromQueryString, FromRequestBody, RequestValidationError
+from request_mapper import FromBody, FromQuery, RequestValidationError
 
 
 class TestMapper(unittest.TestCase):
@@ -26,8 +26,8 @@ class TestMapper(unittest.TestCase):
     def test_mapper_maps_data_after_setup(self):
         @request_mapper.map_request
         def target(
-            query: FromQueryString[QueryDummyModel],
-            body: FromRequestBody[RequestBodyDummyModel],
+            query: FromBody[QueryDummyModel],
+            body: FromQuery[RequestBodyDummyModel],
         ):
             self.assertEqual(query, QueryDummyModel(query=True))
             self.assertEqual(body, RequestBodyDummyModel(body=True))
@@ -38,7 +38,7 @@ class TestMapper(unittest.TestCase):
     def test_mapper_raises_on_validation_error(self):
         @request_mapper.map_request
         def target(
-            _query: FromQueryString[QueryDummyModel],
+            _query: FromBody[QueryDummyModel],
         ):
             pass
 
@@ -69,7 +69,7 @@ class TestMapper(unittest.TestCase):
                 return self.val * 2
 
         @request_mapper.map_request
-        def target(query: FromQueryString[QueryDummyModel]):
+        def target(query: FromBody[QueryDummyModel]):
             self.assertEqual(query, QueryDummyModel(query=True))
 
             return query
@@ -79,7 +79,7 @@ class TestMapper(unittest.TestCase):
 
     def test_mapper_raises_when_not_set_up(self):
         @request_mapper.map_request
-        def _dummy(_foo: FromQueryString[unittest.TestCase]):
+        def _dummy(_foo: FromBody[unittest.TestCase]):
             pass
 
         with self.assertRaises(TypeError) as e:
