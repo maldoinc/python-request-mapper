@@ -52,7 +52,6 @@ pyright = "^1.1.332"
 tox = "^4.11.3"
 mypy = "^1.6.1"
 types-flask = "^1.1.6"
-aiohttp = "^3.8.6"
 
 [build-system]
 requires = ["poetry-core"]
