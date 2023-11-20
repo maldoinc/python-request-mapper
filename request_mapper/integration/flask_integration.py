@@ -70,4 +70,4 @@ class FlaskIntegration(RequestMapperIntegration):
 
     def get_query_as_dict(self, call: FunctionCall) -> IncomingMappedData:  # noqa: ARG002
         """Return the query data as a dict using request.args."""
-        return flask.request.args.to_dict()  # type:ignore[no-any-return]
+        return flask.request.args  # type:ignore[no-any-return]
