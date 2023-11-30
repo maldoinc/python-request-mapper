@@ -28,6 +28,9 @@ async def _aio_error_middleware(
 
 def _get_request(call: FunctionCall) -> web.Request:
     for arg in call.args:
+        if isinstance(arg, web.View):
+            return arg.request
+
         if isinstance(arg, web.Request):
             return arg
 

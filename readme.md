@@ -76,7 +76,15 @@ def post_create(body: FromBody[PostCreateRequest]) -> PostCreateResponse:
 
 * Async integration.
 * Pull data from the current request.
-* Note: even when using `map_request`, `request` must still be present as the first argument as required by aio.
+* Note: When using function-based views, `request` must still be present as the first argument as required by aio.
+* Class-based views support
+
+```python
+  class HomeView(web.View):
+      @map_request
+      async def get(self, request: FromQuery[QueryDummyModel]) -> web.Response:
+          return web.json_response({"query": request.query})
+```
 
 ### Custom integrations
 

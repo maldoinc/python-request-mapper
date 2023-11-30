@@ -27,3 +27,19 @@ async def test_maps_query_json_models_successfully(aiohttp_client):
     client = await aiohttp_client(app)
     resp = await client.post("/?query=true", json={"body": True})
     assert await resp.text() == "Hello world"
+
+
+@pytest.mark.asyncio()
+async def test_maps_class_based_views(aiohttp_client):
+    class DummyView(web.View):
+        @map_request
+        async def get(self, request: FromQuery[QueryDummyModel]) -> web.Response:
+            return web.json_response({"query": request.query})
+
+    app = web.Application()
+    app.router.add_get("/", DummyView)
+    setup_mapper(integration=AioHttpIntegration(app))
+
+    client = await aiohttp_client(app)
+    resp = await client.get("?query=true")
+    assert await resp.json() == {"query": True}
