@@ -3,7 +3,7 @@ from test.fixtures import QueryDummyModel, RequestBodyDummyModel
 import pytest
 from aiohttp import web
 from aiohttp.pytest_plugin import aiohttp_client
-from request_mapper import FromBody, FromQuery, map_request, setup_mapper
+from request_mapper import FromQuery, FromBody, map_request, setup_mapper
 from request_mapper.integration.aiohttp_integration import AioHttpIntegration
 
 
@@ -12,8 +12,8 @@ async def test_maps_query_json_models_successfully(aiohttp_client):
     @map_request
     async def view(
         _request: web.Request,
-        query: FromBody[QueryDummyModel],
-        body: FromQuery[RequestBodyDummyModel],
+        query: FromQuery[QueryDummyModel],
+        body: FromBody[RequestBodyDummyModel],
     ):
         assert query == QueryDummyModel(query=True)
         assert body == RequestBodyDummyModel(body=True)

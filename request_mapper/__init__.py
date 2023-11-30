@@ -27,8 +27,8 @@ _integration: RequestMapperIntegrationType | None = None
 _response_converter: Callable[[BaseModel], Any] | None = None
 __T = TypeVar("__T")
 
-FromQuery = Annotated[__T, RequestBodyMapping]
-FromBody = Annotated[__T, QueryStringMapping]
+FromBody = Annotated[__T, RequestBodyMapping]
+FromQuery = Annotated[__T, QueryStringMapping]
 
 
 def _validate_input(val: AnnotatedParameter, data: Mapping[Any, Any]) -> BaseModel:
@@ -175,8 +175,8 @@ def setup_mapper(
 
 
 __all__ = [
-    "FromQuery",
     "FromBody",
+    "FromQuery",
     "setup_mapper",
     "map_request",
     "RequestMapperIntegration",

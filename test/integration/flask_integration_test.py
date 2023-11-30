@@ -3,7 +3,7 @@ import unittest
 from flask import Flask
 from pydantic import BaseModel
 
-from request_mapper import FromBody, FromQuery, setup_mapper
+from request_mapper import FromQuery, FromBody, setup_mapper
 from request_mapper.integration.flask_integration import FlaskIntegration
 from test.fixtures import QueryDummyModel, RequestBodyDummyModel
 
@@ -19,7 +19,7 @@ class FlaskIntegrationTest(unittest.TestCase):
             content: str
 
         @self.app.route("/", methods=["POST"])
-        def flask_view(query: FromBody[QueryDummyModel], body: FromQuery[RequestBodyDummyModel]):
+        def flask_view(query: FromQuery[QueryDummyModel], body: FromBody[RequestBodyDummyModel]):
             self.assertEqual(query, QueryDummyModel(query=True))
             self.assertEqual(body, RequestBodyDummyModel(body=True))
 
