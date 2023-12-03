@@ -1,11 +1,9 @@
 import unittest
+from test.fixtures import QueryDummyModel, RequestBodyDummyModel
 
 from flask import Flask
-from pydantic import BaseModel
-
-from request_mapper import FromQuery, FromBody, setup_mapper
+from request_mapper import FromBody, FromQuery, setup_mapper
 from request_mapper.integration.flask_integration import FlaskIntegration
-from test.fixtures import QueryDummyModel, RequestBodyDummyModel
 
 
 class FlaskIntegrationTest(unittest.TestCase):
@@ -25,4 +23,4 @@ class FlaskIntegrationTest(unittest.TestCase):
         setup_mapper(integration=FlaskIntegration(app=self.app))
         res = self.client.post("/", query_string={"query": True}, json={"body": True})
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(res.text, "ok")
+        self.assertEqual(res.data, b"ok")
